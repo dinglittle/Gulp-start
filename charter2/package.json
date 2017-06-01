@@ -1,0 +1,16 @@
+{
+
+	
+	"version":"0.0.1",
+
+	"description":"",
+
+	"main":"gulpfile.js",
+
+	"license":"ISC",
+
+	"devDependencies":{
+		"gulp":"^3.8.11",
+		"gulp-uglify":"^1.1.0"
+	}
+}

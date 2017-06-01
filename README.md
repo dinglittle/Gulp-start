@@ -1,4 +1,4 @@
-#Gulp 入门指南
+# Gulp 入门指南
 https://github.com/nimojs/gulp-book
 
 ---
@@ -8,14 +8,14 @@ gulp就基于 node 实现 web 前端自动化的开发工具，利用它能够�
 找到这些规律，并编写 gulp 配置代码，让 gulp 自动执行这些“重复工作”。
 
 ---
-##安装 Node 和 Gulp 
+## 安装 Node 和 Gulp 
 ---
 gulp是基于 node 实现的，那么我们就需要先安装 node.
 -node是一个基于 Chrome JavaScript V8 引擎建立的一个平台，可以利用它实现 Web 服务，做类似 PHP 的事。
 
 打开 https://nodejs.org/ 点击绿色的 **INSTALL** 按钮下载安装 node .
 
-##使用终端/命令行
+## 使用终端/命令行
 ---
 ### 命令行
 
@@ -68,11 +68,11 @@ cd ..
 
 后面的章节中如果代码中存在`gulp.watch`并在命令运行了`gulp`则需要使用`ctrl+c`退出任务。
 
-##npm模块管理器
+## npm模块管理器
 ---
 http://javascript.ruanyifeng.com/nodejs/npm.html
 
-##安装gulp
+## 安装gulp
 ---
 npm是node的包管理工具，可以利用它安装 gulp 所需的包。(在安装node时已经自动安装了npm)
 在命令行输入
@@ -91,7 +91,7 @@ npm instll -g gulp
 
 ---
 
-#使用 gulp 压缩 JS
+# 使用 gulp 压缩 JS
 ---
 请务必理解如下章节后阅读此章节:
 1.安装Node 和 gulp
@@ -100,11 +100,11 @@ npm instll -g gulp
 
 所有的 gulp 代码编写都可以看做是将规律转化为代码的过程。
 
-##规律
+## 规律
 ---
 找到`js/`目录下的所有js文件，压缩它们，将压缩后的文件存放在`dist/js/`目录下。
 
-##gulp代码
+## gulp代码
 ---
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
 

@@ -81,3 +81,5 @@ npm instll -g gulp
 
 ---
 ---
+
+[接着阅读：使用 gulp 压缩 js](/chapter2.md)

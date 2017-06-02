@@ -1,5 +1,5 @@
 # 使用 gulp 压缩 JS 
----
+
 请务必理解如下章节后阅读此章节:
 1.[安装Node 和 gulp](/chapter1.md)
 [访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/11)
@@ -9,11 +9,11 @@
 所有的 gulp 代码编写都可以看做是将规律转化为代码的过程。
 
 ## 规律
----
+
 找到`js/`目录下的所有js文件，压缩它们，将压缩后的文件存放在`dist/js/`目录下。
 
 ## gulp代码
----
+
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
 
 **建议:** 你可以只阅读下面的代码与注释或同时阅读代码解释

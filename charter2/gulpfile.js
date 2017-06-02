@@ -18,3 +18,13 @@ gulp.task('script',function(){
 })
 
 
+//自动任务
+gulp.task('auto',function(){
+	
+	//gulp watch
+	gulp.watch('js/*.js',['script'])
+})
+
+//使用 gulp.task('default') 定义默认任务
+//在命令行使用 gulp 启动 script 任务 和 auto 任务
+gulp.task('default',['script','auto']);

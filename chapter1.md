@@ -1,12 +1,12 @@
 # 安装 Node 和 Gulp 
----
+
 gulp是基于 node 实现的，那么我们就需要先安装 node.
 -node是一个基于 Chrome JavaScript V8 引擎建立的一个平台，可以利用它实现 Web 服务，做类似 PHP 的事。
 
 打开 https://nodejs.org/ 点击绿色的 **INSTALL** 按钮下载安装 node .
 
 ## 使用终端/命令行
----
+
 ### 命令行
 
 在 windows 中可按 win+R 打开 cmd + enter 打开命令行
@@ -59,11 +59,11 @@ cd ..
 后面的章节中如果代码中存在`gulp.watch`并在命令运行了`gulp`则需要使用`ctrl+c`退出任务。
 
 ## npm模块管理器
----
+
 http://javascript.ruanyifeng.com/nodejs/npm.html
 
 ## 安装gulp
----
+
 npm是node的包管理工具，可以利用它安装 gulp 所需的包。(在安装node时已经自动安装了npm)
 在命令行输入
 ```
@@ -79,7 +79,6 @@ npm instll -g gulp
 
 至此，我们完成了准备工作，
 
----
----
+
 
 [接着阅读：使用 gulp 压缩 js](/chapter2.md)

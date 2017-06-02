@@ -1,7 +1,7 @@
 # 使用 gulp 压缩 JS 
 ---
 请务必理解如下章节后阅读此章节:
-1.[安装Node 和 gulp](https://github.com/nimojs/gulp-book/blob/master/chapter1.md)
+1.[安装Node 和 gulp](/chapter1.md)
 [访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/11)
 
 压缩 js 代码可降低js文件大小，提高页面找开速度。在不利用 gulp 时我们需要通过各种工具手机完成压缩工作。

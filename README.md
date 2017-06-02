@@ -90,11 +90,14 @@ npm instll -g gulp
 至此，我们完成了准备工作，
 
 ---
+---
 
-# 使用 gulp 压缩 JS
+# 使用 gulp 压缩 JS 
+[charter2]()
 ---
 请务必理解如下章节后阅读此章节:
-1.安装Node 和 gulp
+1.[安装Node 和 gulp](https://github.com/nimojs/gulp-book/blob/master/chapter1.md)
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/11)
 
 压缩 js 代码可降低js文件大小，提高页面找开速度。在不利用 gulp 时我们需要通过各种工具手机完成压缩工作。
 
@@ -189,3 +192,9 @@ Error:Cannot find module 'gulp=uglify'
 	at Function.Module._resolveFilename (module.js:388:15)
 	
 ```
+
+---
+
+### 七、安装`gulu-uglify`模块
+
+因为我们并没有安装`gulp-uglify`模块到本地，所以找不到此模块

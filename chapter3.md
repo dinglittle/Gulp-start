@@ -16,7 +16,7 @@
 找到 `css/` 目录下的所有 css 文件，压缩它们，将压缩后的文件存放在 `dist/css/` 目录下。
 
 ## gulp 代码
----
+
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
 
 当熟悉 [使用 gulp 压缩 JS ](/chapter2) 的方法后，配置压缩 CSS 的 gulp 代码 就变得很轻松。
@@ -44,3 +44,4 @@ gulp-minify-css@1.0.0 node_modules/gulp-minify-css
 └── gulp-util@3.0.4 (array-differ@1.0.0, beeper@1.0.0, array-uniq@1.0.2, lodash._reescape@3.0.0, lodash._reinterpolate@3.0.0, lodash._reevaluate@3.0.0, replace-ext@0.0.1, minimist@1.1.1, multipipe@0.1.2, vinyl@0.4.6, chalk@1.0.0, lodash.template@3.3.2, dateformat@1.0.11)
 ```
 
+### 二、参照[使用 gulp 压缩 JS](/chapter2.md) 创建 `gulpfile.js` 文件缩写代码

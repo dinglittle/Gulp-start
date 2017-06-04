@@ -9,9 +9,9 @@ gulp就基于 node 实现 web 前端自动化的开发工具，利用它能够�
 
 #### [安装 Node 和 Gulp](/chapter1.md)
 
-#### [使用 gulp 压缩 JS](/chapter2.md)
+#### [使用 Gulp 压缩 JS](/chapter2.md)
 
-#### [使用 gulp 压缩 CSS](/chapter3.md)
+#### [使用 Gulp 压缩 CSS](/chapter3.md)
 ---
 
 

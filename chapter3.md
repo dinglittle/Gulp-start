@@ -45,3 +45,60 @@ gulp-minify-css@1.0.0 node_modules/gulp-minify-css
 ```
 
 ### 二、参照[使用 gulp 压缩 JS](/chapter2.md) 创建 `gulpfile.js` 文件缩写代码
+
+在对应目录创建 `gulpfile.js` 文件，并写入如下内容
+
+```
+//获取 gulp
+var gulp = require('gulp')
+
+//获取 minify-css 模块（用于压缩CSS）
+var minifyCSS = require('gulp-minify-css')
+
+//压缩 css 文件
+//在命令行使用 gulp css 启动任务
+gulp.task('css',function(){
+	//1.找到文件
+	gulp.src('css/*.css')
+	//2.压缩文件
+		.pipe(minifyCSS())
+	//3.另存 压缩完的文件
+		.pipe(gulp.dest('dist/css'))
+})
+
+//在命令行使用 gulp auto 启动任务
+gulp.task('auto',function(){
+	//监听文件修改，当文件被修改则执行 css 任务
+	gulp.watch('css/*.css',['css'])
+	
+})
+
+//使用 gulp.task('default')定义默认任务
+//在命令行使用 gulp 启动 css 任务和 auto 任务
+gulp.task('default',['css','auto'])
+```
+
+你可以访问 [gulp-minify-css](https://www.npmjs.com/package/gulp-minify-css)以查看更多用法
+
+### 三、运行 gulp 查看效果
+
+在命令行输入 `gulp` + 回车
+
+你将看到命令行再现如下提示
+
+```
+gulp
+[17:01:19] Using gulpfile ~/Documents/code/gulp-book/demo/chapter3/gulpfile.js
+[17:01:19] Starting 'css'...
+[17:01:19] Finished 'css' after 6.21 ms
+[17:01:19] Starting 'auto'...
+[17:01:19] Finished 'auto' after 5.42 ms
+[17:01:19] Starting 'default'...
+[17:01:19] Finished 'default' after 5.71 μs
+```
+
+gulp 会创建 `dist/css` 目录，并创建 `a.css` 文件，此文件存放压缩后的 css 代码。 [dist/css/index.css](./chapter3/dist/css/index.css)
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/12)
+
+[接着阅读：使用 gulp 压缩图片](/chapter4.md)

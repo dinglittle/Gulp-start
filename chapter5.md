@@ -45,4 +45,4 @@ gulp.task('auto',function(){
 gulp.task('default',['less','auto'])
 ```
 
-[使用 gulp 编译 sass](/chapter6.md)
+[使用 gulp 编译 sass](/chapter6.md) 

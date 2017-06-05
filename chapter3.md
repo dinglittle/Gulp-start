@@ -2,7 +2,9 @@
 
 
 请务必理解如下章节后阅读些章节
+
 1.[安装 Node 和 Gulp](/chapter1.md)
+
 2.[使用 gulp 压缩 JS](/chapter2.md)
 
 ---

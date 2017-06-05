@@ -2,7 +2,7 @@
 
 请务必理解如下章节后阅读此章节:
 
-1.[安装Node 和 gulp](/chapter1.md) 
+1.[安装Node 和 gulp](/chapter1.md)  
 
 [访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/11)
 

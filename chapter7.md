@@ -90,7 +90,70 @@ npm install gulp --save-dev
 ```
 此时打开 `package.json` 会发现多了如下代码
 ```
- "devDependencies":{
-	"gulp":"^3.8.11"
- }
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+```
+声明此项目的开发依赖 gulp
+
+接着安装其它依赖：
+
+-安装模块较多，请耐心等待，若一直安装失败可使用 [npm.taobao.org](http://npm.taobao.org/)
+
+此时，[package.json]()将会更新
+```
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-imagemin": "^3.3.0",
+    "gulp-less": "^3.3.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-ruby-sass": "^2.1.1",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "gulp-watch-path": "^0.1.0",
+    "stream-combiner2": "^1.1.1"
+  }
+```
+
+当你将这份 gulpfile.js 配置分享给你的朋友时，就不需要将 `node_modules/` 发送给他，他只需要在命令行输入
+```
+npm install
+```
+就可以检测`package.json` 中的 `devDependencies` 并安装所有依赖
+
+## 设计目录结构
+---
+我们将文件分为2类，一类是源码，一类是编译压缩后的版本。文件夹分别为`src`和`dist`。(注意区分`dist` 和 `dest` 的区别)
+
+```
+└── src/
+│
+└── dist/
+```
+
+`dist/` 目录下的文件都是根据 `src/` 下所有源码文件构建而成。
+
+在`src/`下创建前端资源对应的文件夹
+
+```
+└── src/
+	├── less/    *.less 文件
+	├── sass/    *.scss *.sass 文件
+	├── css/     *.css  文件
+	├── js/      *.js 文件
+	├── fonts/   字体文件
+    └── images/   图片
+└── dist/
+```
+
+你可以点击 [nimojs/gulp-demo](https://github.com/nimojs/gulp-demo)下载本章代码。
+
+## 让命令行输出的文字带颜色
+---
+
+gulp自带的输出都带时间和颜色，这样很容易识别。我们利用 [gulp-util]() 实现同样的效果。
+```
+
 ```

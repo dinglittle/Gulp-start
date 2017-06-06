@@ -155,5 +155,75 @@ npm install
 
 gulp自带的输出都带时间和颜色，这样很容易识别。我们利用 [gulp-util]() 实现同样的效果。
 ```
+//获取 gulp
+var gulp = require('gulp')
+var gutil = require('gulp-util')
+
+//gulp 默认任务
+gulp.task('default',function(){
+  gutil.log('message')
+  gutil.log(gutil.colors.red('error'))
+  gutil.log(gutil.colors.green('message:') + "some")
+})
+```
+
+## 配置 JS 任务
+
+### gulp-uglify
+
+检测 `src/js/`目录下的js文件修改后,压缩`js/`中所有 js 文件并输出到 `dist/js/`中
+```
+//gulp-uglify 压缩js
+var uglify = require('gulp-uglify')
+
+//uglifyjs 任务
+gulp.task('uglifyjs',function(){
+  gulp.src('src/js/**/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/js'))
+})
+
+gulp.task('default',function(){
+  gulp.watch('src/js/**/*.js',['gulifyjs'])
+})
+``` 
+
+`src/js**/*.js` 是 glob 语法.[百度百科:glob模式]()、[node-glob](https://github.com/isaacs/node-glob)
+
+在命令行输入`gulp`后会出现如下消息,表示已经启动.
 
 ```
+[20:39:50] Using gulpfile ~/Documents/code/gulp-book/demo/chapter7/gulpfile.js
+[20:39:50] Starting 'default'...
+[20:39:50] Finished 'default' after 13 ms
+```
+
+此时编辑`src/js/log.js` 文件并保存,命令行会出现如下消息,表示检测到`src/js/**/*.js`文件修改后重新编译所有 js.
+```
+[20:39:52] Starting 'js'...
+[20:39:52] Finished 'js' after 14 ms
+```
+
+### gulp-watch-path
+
+此配置有个性能问题,当`gulp-watch`检测到`src/js/` 目录下的js文件有修改时会将所有文件全部编译.实际上我们只需要重新编译被修改的文件.
+
+简单介绍`gulp.watch`第二个参数为`function`时的用法
+
+```
+gulp.watch('src/js/**/*.js',function(event){
+  console.log(event);
+  /*
+    当修改 src/js/log.js 文件时
+    event{
+      //发生改变的类型,不是添加,改变或是删除
+      type:'changed',
+      //触发事件的文件路径
+      path:'Users/lwj/Desk/code/github/gulp/gulp-demo/...js'
+    }
+  */
+})
+```
+我们可以利用 `event` 给到的信息,检测到某个 js 文件被修改时,只编写当前修改的 js 文件.
+
+可以利用 `gulp-watch-path` 配合 `event` 获取编译路径和输出路径.

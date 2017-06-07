@@ -270,4 +270,53 @@ gulp.task('default',['watchjs'])
 ```
 [use-gulp-watch-path 完整代码](https://github.com/nimojs/gulp-book/blob/master/demo/chapter7/use-gulp-watch-path.js)
 
-`watchPath(event, search, replace, distExt)
+`watchPath(event, search, replace, distExt)`
+
+```
+event: gulp.watch 回调函数的 event
+
+search: 需要被替换的其实字符串
+
+replace: 第三个参数是新的字符串
+
+distExt: 扩展名(非必填)
+```
+此时,编辑 `src/js/log.js` 文件并保存,命令行会出现消息,表示检测到 `src/js/log.js` 文件修改后重新编译 `log.js`.
+
+```
+[00:29:10] changedsrc/js/log.js
+[00:29:10] Distdist/js/log.js
+```
+你可以访问 [gulp-watch-path](https://github.com/nimojs/gulp-watch-path) 了解更多
+
+### stream-combiner2
+
+编辑`log.js`文件时,如果文件中有js语法错误时, gulp 会终止运行并报错.
+
+当 log.js 缺少 `)`
+
+```
+events.js:160
+      throw er; // Unhandled 'error' event
+      ^
+GulpUglifyError: unable to minify JavaScript
+    at createError (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/gulp-uglify/lib/create-error.js:6:14)
+    at apply (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/gulp-uglify/node_modules/lodash/_apply.js:16:25)
+    at wrapper (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/gulp-uglify/node_modules/lodash/_createCurry.js:41:12)
+    at /Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/gulp-uglify/lib/minify.js:54:15
+    at DestroyableTransform._transform (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/gulp-uglify/composer.js:10:23)
+    at DestroyableTransform.Transform._read (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/through2/node_modules/readable-stream/lib/_stream_transform.js:159:10)
+    at DestroyableTransform.Transform._write (/Users/lwj/Desktop/code/github/Gulp/gulp-demo/node_modules/through2/node_modules/readable-stream/lib/_stream_transform.js:147:83)
+```
+
+应对这种情况,我们可以使用 [Combining streams to handle errors](https://github.com/gulpjs/gulp/blob/master/docs/recipes/combining-streams-to-handle-errors.md)文档中的 [stream-combiner2](https://github.com/substack/stream-combiner2) 捕获错误信息.
+
+```
+var handleError = function(err){
+  var colors = gutil.colors;
+  console.log('\n')
+  gutil.log(colors.red('Error!'))
+  gutil.log('fileName' + colors.red(err.fileName))
+  gutil.log()
+}
+```

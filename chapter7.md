@@ -227,3 +227,47 @@ gulp.watch('src/js/**/*.js',function(event){
 我们可以利用 `event` 给到的信息,检测到某个 js 文件被修改时,只编写当前修改的 js 文件.
 
 可以利用 `gulp-watch-path` 配合 `event` 获取编译路径和输出路径.
+
+```
+var watchPath = require('gulp-watch-path')
+
+//gulp-watch-path 任务
+gulp.task('watchjs',function(){
+	gulp.watch('src/js/**/*.js',function(event){
+		console.log(event);
+		/*
+		当修改 src/js/log.js 文件时
+		event{
+			//发生改变的类型( changed  added  deleted ) , 不管是添加,改变或是删除
+			type:'changed',
+			//触发事件的文件路径
+			path: 'F:\\github\\gulp-demo\\src\\js\\log.js'
+		}
+		*/
+		var paths = watchPath(event,'src/','dist/')
+		/*
+		paths
+		{
+			srcPath:'src/js/log.js',          源文件地址
+			srcDir:'src/js/',                 源文件目录
+			distPath:'dist/js/log.js',        编译完文件地址
+			distDir:'dist/js/',               编译完文件目录
+			srcFilename:'log.js',             源文件名字
+			distFilenam:'log.js'              编译完文件名字
+		}
+		*/
+		gutil.log(gutil.colors.green(event.type) + '' + paths.srcPath)
+		gutil.log('Dist' + paths.distPath)
+		
+		//paths.srcPath 源文件地址
+		gulp.src(paths.srcPath)
+			.pipe(uglify())
+			.pipe(gulp.dest(paths.distDir))
+	})
+})
+
+gulp.task('default',['watchjs'])
+```
+[use-gulp-watch-path 完整代码](https://github.com/nimojs/gulp-book/blob/master/demo/chapter7/use-gulp-watch-path.js)
+
+`watchPath(event, search, replace, distExt)

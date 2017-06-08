@@ -317,6 +317,218 @@ var handleError = function(err){
   console.log('\n')
   gutil.log(colors.red('Error!'))
   gutil.log('fileName' + colors.red(err.fileName))
-  gutil.log()
+  gutil.log('lineNumber:' + colors.red(err.lineNumber))
+  gutil.log('message:' + err.message)
+  gutil.log('plugin:' + colors.yellow(err.plugin))
 }
+var combiner = require('stream-combiner2')
+
+gulp.task('watchjs',function(){
+	gulp.watch('src/js/**/*.js',function(event){
+		var paths = watchPath(event, 'src/', 'dist/')
+		/*
+		paths
+			{
+				srcPath:'src/js/log.js',
+				srcDir:'src/js/',
+				distPath:'dist/js/log.js',
+				distDir:'dist/js/',
+				srcFilename:'log.js',
+				distFilename:'log.js'
+			}
+		*/
+		gutil.log(gutil.colors.green(event.type) + '' + paths.srcPaht)
+		gutil.log('Dist' + paths.distPath)
+		
+		var combined = combiner.obj([
+			gulp.src(paths.srcPath),
+			uglify(),
+			gulp.dest(paths.distDir)
+		])
+		
+		combined.on('error',handleError)
+	}
+})
+```
+[watchjs-1 完整代码](https://github.com/nimojs/gulp-book/blob/master/demo/chapter7/watchjs-1.js)
+
+```
+changed:src/js/log.js
+dist:dist/js/log.js
+--------------
+Error!
+fileName: /Users/nimojs/Documents/code/gulp-book/demo/chapter7/src/js/log.js
+lineNumber: 7
+message: /Users/nimojs/Documents/code/gulp-book/demo/chapter7/src/js/log.js: Unexpected token eof «undefined», expected punc «,»
+plugin: gulp-uglify
+```
+
+### gulp-sourcemaps
+
+JS压缩前和压缩后比较
+```
+//压缩前
+var log = function(msg){
+	console.log('------');
+	console.log(msg);
+	console.log('-------');
+}
+log({a:1})
+log('gulp-book')
+
+//压缩后
+var log=function(o){console.log("------"),console.log(o),console.log("-------")};log({a:1}),log("gulp-book");
+```
+
+压缩后的代码并不存在换行和空白符，导致出错后很难调试，好在我们可以利用[sourcemap]()帮助调试
+
+```
+var sourcemaps = require('gulp-sourcemaps')
+//...
+var combined = combiner.obj([
+	gulp.src(paths.srcPath),
+	sourcemaps.init(),
+	uglify(),
+	sourcemaps.write('./'),
+	gulp.dest(paths.distDir)
+])
+//...
+```
+[watchjs-2完整代码](https://github.com/nimojs/gulp-book/blob/master/demo/chapter7/watchjs-2.js)
+
+此时`dist/js/`中也会生成对应的`.map`文件，以便使用 Chorme 控制台调试代码 
+
+到此，我们完成了检测文件修改后压缩JS的gulp任务配置。
+
+有时我们也需要一次编译所有js文件。可以配置`uglifyjs`任务。
+
+```
+gulp.task('uglifyjs',function(){
+	var combined = combiner.obj([
+		gulp.src('src/js/**/*.js'),
+		sourcemaps.init(),
+		uglify(),
+		sourcemaps.write('./'),
+		gulp.dest('dist/js/')
+	])
+	combined.on('error',handleError)
+})
+```
+在命令行输入 `gulp uglifyjs` 以压缩 `srcc/js/` 下的所有js文件。
+
+## 配置 CSS 任务
+---
+有时我们不想使用LESS或SASS而是直接编写CSS，但我们需要压缩CSS以提高页面加载速度。
+
+### gulp-minify-css
+
+--gulp-minify-css 已经废弃,可以更改为 gulp-clean-css
+
+按照本章中压缩JS的方式，先编写`watchcss`任务 
+
+```
+var minifycss = require('gulp-minify-css')
+
+gulp.task('watchcss',function(){
+	gulp.watch('src/css/**/*.css',function(event){
+		var paths = watchPath(event,'src/','dist/')
+		
+		gutil.log(gutil.colors.green(event.type) + '' + paths.srcPath)
+		gutil.log('Dist' + paths.distPath)
+		
+		gulp.src(paths.srcPath)
+			.pipe(sourcemaps.init())
+			.pipe(minifycss())
+			.pipe(sourcemaps.write('./'))
+			.pipe(gulp.dest(paths.distDir))
+	})
+})
+
+gulp.task('default',['watchjs','watchcss'])
+```
+
+### gulp-autoprefixer
+
+autoprefixer 解析 CSS 文件并且添加浏览器前缀到CSS规则里。通过示例帮助理解
+
+autoprefixer 处理前：
+
+```
+.demo{
+	display:flex;
+}
+```
+
+autoprefixer 处理后：
+
+```
+.demo{
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+}
+```
+
+你只需要关心编写标准语法的 css, autoprefixer 会自动补全。
+
+在 watchcss 任务中加入 autoprefixer
+
+```
+gulp.task('watchcss',function(){
+	var paths = watchPath(event,'src/','dist/')
+	
+	gutil.log(gutil.colors.green(event.type) + '' + paths.srcPath)
+	
+	gutil.log('Dist ' + paths.distPath)
+	
+	gulp.src(paths.srcPath)
+		.pipe(sourcemaps.init())
+		.pipe(autoprefixer({
+			browsers: 'last 2 versions'
+		}))
+		.pipe(cleancss())
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest(paths.distDir))
+})
+```
+
+更多 autoprefixer 参数请查看 [gulp-autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
+
+有时候我们也需要一次编译所有 css 文件。可配置 `minifycss` 任务。
+
+```
+gulp.task('minifycss',function(){
+	gulp.src('src/css/**/*.css')
+		.pipe(sourcemaps.init())
+		.pipe(autoprefixer({
+			browsers: 'last 2 versions'
+		}))
+		.pipe(minifycss())
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('dist/css/'))
+})
+```
+
+在命令行输入`gulp minifycss` 以压缩 `src/css/` 下的所有 .css 文件复制到 `dist/css`目录下
+
+## 配置 Less 任务
+---
+参考配置 JavaScript 任务的方式配置 less 任务
+
+```
+var less = require('gulp-less')
+
+gulp.task('watchless',function(){
+	gulp.watch('src/less/**/*.less',function(event){
+		var paths = watchPath(event, 'src/less/','dist/css/')
+		
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+		
+		gutil.log('Dist ' + paths.distPath)
+		
+		var combined = combiner.obj([
+		
+		])
+	})
+})
 ```

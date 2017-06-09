@@ -526,9 +526,147 @@ gulp.task('watchless',function(){
 		
 		gutil.log('Dist ' + paths.distPath)
 		
+		//combiner  捕获错误信息 stream-combiner2 实例
 		var combined = combiner.obj([
-		
+			//找到文件路径  srcPath  ：paths 下的原文件路径
+			gulp.src(paths.srcPath),
+			//gulp-sourcemaps
+			sourcemaps.init(),
+			//autoprefixer 自动补完 前缀
+			autoprefixer({
+				browsers:'last 2 versions'
+			}),
+			less(),
+			minifycss(),
+			sourcemaps.write('./'),
+			gulp.dest(paths.distDir)
 		])
+		//handleError 自定义的 错误 输出格式
+		combined.on('error',handleError)
 	})
 })
+
+gulp.task('lesscss',function(){
+	var combined = combiner.obj([
+		gulp.src('src/less/**/*.less'),
+		sourcemaps.init(),
+		autoprefixer({
+			browsers:'last 2 versions'
+		}),
+		less(),
+		minifycss(),
+		sourcemaps.write('./'),
+		gulp.dest('dist/css')
+	])
+	combined.on('error',handleError)
+})
+gulp.task('default',['watchjs','watchcss','watchless'])
 ```
+
+## 配置 Sass 任务
+---
+参考配置 JavaScript 任务的方式配置 Sass 任务
+
+```
+var sass = require('gulp-ruby-sass')
+
+gulp.task('watchsass',function(){
+	gulp.watch('src/sass/**/*',function(event){
+		//注入的 gulp-watch-path 模块
+		var paths = watchPath(event,'src/sass/','dist/css/')
+		
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+		
+		gutil.log('Dist' + path.distPath)
+		sass(paths.srcPath)
+			.on('error',function(err){
+				console.error('Error!',err.message);
+			})
+			.pipe(sourcemaps.init())
+			.pipe(minifycss())
+			.pipe(autoprefixer({
+				browsers:'last 2 version'
+			})
+			.pipe(sourcemaps.write('./'))
+			.pipe(gulp.dest(paths.distDir))
+	})
+})
+
+gulp.task('sasscss',function(){
+	sass('src/sass/')
+	.on('error',function(err){
+		console.error('Error!',err.message);
+	})
+	.pipe(sourcemaps.init())
+	.pipe(minifycss())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('dist/css'))
+})
+
+gulp.task('defautl',['watchjs','watchcss','watchless','watchsass','sasscss'])
+```
+
+## 配置 image 任务
+---
+```
+var immagemin = require('gulp-imagemin')
+
+gulp.task('watchimage',function(){
+	gulp.watch('src/images/**/*',function(event){
+		var paths = watchPath(event,'src/','dist/')
+		
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath0
+		gutil.log('Dist' + paths.distPath)
+		
+		gulp.src(paths.srcPath)
+			.pipe(imagemin({
+				pargressive:true
+			}))
+		.pipe(gulp.dest(paths.distDir))	
+	})
+})
+
+gulp.task('image',function(){
+	gulp.src('src/images/**/*')
+		.pipe(imagemin({
+			progressive:true
+		}))
+		.pipe(gulp.dest('dist/images'))
+})
+```
+
+## 配置文件复制任务
+---
+
+复制 `src/fonts/` 文件到 `dist/` 中
+
+```
+gulp.task('watchcopy',function(){
+	gulp.watch('src/fonts/**/*',function(event){
+		var paths = watchPath(event)
+		
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+		
+		gutil.log('Dist' + paths.distPath)
+		
+		gulp.src(paths.srcPath)
+			.pipe(gulp.dest(paths.distDir))
+	})
+})
+
+gulp.task('copy',function(){
+	gulp.src('src/fonts/**/*')
+		.pipe(gulp.dest('dist/fonts/'))
+})
+
+gulp.task('default',['watchjs','watchcss','watchless','watchsass','watchimage','watchcopy'])
+```
+
+## 结语
+---
+[完整代码](https://github.com/nimojs/gulp-demo/blob/master/gulpfile.js)
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/16)
+
+你不了解什么关于 gulp 的什么知识？
+
